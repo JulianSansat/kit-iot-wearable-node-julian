@@ -1,0 +1,19 @@
+var Wearable = require('kit-iot-wearable'),
+    kit = new Wearable({
+      name: 'wV3_0E0039A1'
+    });
+ 
+kit.findWearable();
+ 
+//after connect the 'connected' event will be emitted 
+kit.on('connected', function () {
+   kit.ledON('RED');
+
+  setInterval(function () {
+    kit.temperature();
+  }, 1000);
+});
+
+kit.on("data:temperature", function (temp) {
+  console.log("temperatura é: " + temp);
+});
