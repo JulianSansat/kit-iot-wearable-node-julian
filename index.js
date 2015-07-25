@@ -1,3 +1,4 @@
+var farol = 'apagado';
 var Wearable = require('kit-iot-wearable'),
 kit = new Wearable({
 name: 'wV3_0E0039A1'
@@ -11,17 +12,23 @@ kit.on('connected', function () {
 
 	setInterval(function () {
 		kit.luminosity();
-	}, 1000);
+	}, 500);
 
 });
 
 kit.on("data:luminosity", function (data) {
 	console.log(data);
-	if(data > 50){
+	if(data > 50 && farol != 'apagado'){
 		kit.ledOFF();
-	} else if( data < 50 && data > 15){
+		farol = 'apagado';
+		console.log("farol apagado");
+	} else if( data < 50 && data > 15 && farol != 'baixo'){
 		kit.ledON('GREEN');
-	} else if(data < 15) {
+		farol = 'baixo';
+		console.log("farol baixo");
+	} else if(data < 15 && farol != 'alto') {
 		kit.ledON('BLUE');
+		farol = 'alto';
+		console.log("farol alto");
 	}
 });
